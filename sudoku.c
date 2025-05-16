@@ -49,19 +49,19 @@ int is_valid(Node* n){
   int visto[10] ;
 
   for (int i = 0 ; i < 9 ; i++) {
-    memset(visto, 0, sizeof(visto)) ;
+    memset(visto, 0, sizeof(visto)) ; // Limpio el arreglo  para las filas
     for (int j = 0 ; j < 9 ; j++) {
-      int num = n -> sudo[i][j] ;
-      if (num == 0) continue;
-      if (visto[num]) return 0 ;
-      visto[num] = 1 ;
+      int num = n -> sudo[i][j] ; // Tomo el numero en fila i columna j
+      if (num == 0) continue; // Ignoro los 0 
+      if (visto[num]) return 0 ; // Si ya aparecio el numero ( == 1) retorno 0 
+      visto[num] = 1 ; // Marcar que ese numero ya está
     }
   }
 
   for (int j = 0 ; j < 9 ; j++) {
-    memset(visto, 0, sizeof(visto)) ;
+    memset(visto, 0, sizeof(visto)) ; // Limpio el arreglo  para las columnas
     for (int i = 0 ; i < 9 ; i++) {
-      int num = n -> sudo[i][j] ;
+      int num = n -> sudo[i][j] ; // Se invierte el orden de i y j
       if (num == 0) continue;
       if (visto[num]) return 0 ;
       visto[num] = 1 ;
@@ -69,8 +69,8 @@ int is_valid(Node* n){
   }
 
   for (int k = 0 ; k < 9 ; k++) {
-    memset(visto, 0, sizeof(visto)) ;
-    for (int p = 0 ; p < 9 ; p++) {
+    memset(visto, 0, sizeof(visto)) ; // Reinicio el arreglo
+    for (int p = 0 ; p < 9 ; p++) { // VERIFICO EL 3X3 con el ejemplo dado en el readme
       int i = 3 * (k / 3) + (p / 3) ;
       int j = 3 * (k % 3) + (p % 3) ;
       int num = n -> sudo[i][j] ;
@@ -85,17 +85,17 @@ int is_valid(Node* n){
 
 
 List* get_adj_nodes(Node* n){
-    List* list=createList();
+    List* list=createList(); // Creo lista de nodos
     
-    int fila, col ;
-    bool encontrado = false ;
+    int fila, col ; // Defino variable fila y col, para guardar la posicion
+    bool encontrado = false ; // Parte en falso el encontrado
 
     for (int i = 0 ; i < 9 && !encontrado ; i++) {
       for (int j = 0 ; j < 9 ; j++) {
-        if (n -> sudo[i][j] == 0) {
+        if (n -> sudo[i][j] == 0) { //Busco en todo el nodo si hay algun 0
           fila = i ;
-          col = j ;
-          encontrado = true ;
+          col = j ; 
+          encontrado = true ; // Copio su posicion y encontrado pasa a ser True
           break ;
         }
       }
@@ -104,9 +104,9 @@ List* get_adj_nodes(Node* n){
     if (!encontrado) return list ;
 
     for (int num = 1 ; num <= 9 ; num++) {
-      Node *newNode = copy(n) ;
-      newNode -> sudo[fila][col] = num ;
-      if (is_valid(newNode)) pushBack(list, newNode) ;
+      Node *newNode = copy(n) ; // Copio el nodo original
+      newNode -> sudo[fila][col] = num ; // Coloco el numero en la fila y columna que tiene 0
+      if (is_valid(newNode)) pushBack(list, newNode) ; // Si el nodo es valido lo agrego
       else free(newNode) ;
     }
 
@@ -116,7 +116,13 @@ List* get_adj_nodes(Node* n){
 
 
 int is_final(Node* n){
-    return 0;
+    for (int i = 0 ; i < 9 ; i++) {
+      for (int j = 0 ; j < 9 ; j++) {
+        if (n -> sudo[i][j] == 0) return 0 ;
+      }
+    }
+
+    return 1 ;
 }
 
 Node* DFS(Node* initial, int* cont){
