@@ -106,7 +106,8 @@ List* get_adj_nodes(Node* n){
     for (int num = 1 ; num <= 9 ; num++) {
       Node *newNode = copy(n) ;
       newNode -> sudo[fila][col] = num ;
-      pushBack(list, newNode) ;
+      if (is_valid(newNode)) pushBack(list, newNode) ;
+      else free(newNode) ;
     }
 
 
