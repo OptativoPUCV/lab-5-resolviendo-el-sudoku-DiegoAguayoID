@@ -118,11 +118,11 @@ List* get_adj_nodes(Node* n){
 int is_final(Node* n){
     for (int i = 0 ; i < 9 ; i++) {
       for (int j = 0 ; j < 9 ; j++) {
-        if (n -> sudo[i][j] == 0) return 0 ;
+        if (n -> sudo[i][j] == 0) return 0 ; //No esta completo si esta una casilla vacia
       }
     }
 
-    return 1 ;
+    return 1 ; // Todo esta completo
 }
 
 Node* DFS(Node* initial, int* cont){
